@@ -5,8 +5,8 @@ import { useAccount, useWalletClient } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ethers, BrowserProvider } from 'ethers';
 
-// 合约配置
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '0xYourContractAddress';
+// 合约配置（已部署到 Sepolia）
+const CONTRACT_ADDRESS = '0xE2dBd48f9FcFbF30bfF433F5E30258ab7040E94B';
 const CONTRACT_ABI = [
   "function submitCommitment(bytes32, bytes) external",
   "function getMyCommitment() external view returns (bytes32)",
