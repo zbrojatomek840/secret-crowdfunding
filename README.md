@@ -1,6 +1,7 @@
 # 🔒 Secret Crowdfunding
 
-> Built with FHEVM v0.9 - Privacy-Preserving Fundraising Platform
+> Built with FHEVM v0.9 - Privacy-Preserving Fundraising Platform  
+> Last updated: Dec 2025
 
 A fully encrypted crowdfunding platform where users' commitment amounts remain completely private on-chain. Only the user can decrypt and view their own amount.
 
