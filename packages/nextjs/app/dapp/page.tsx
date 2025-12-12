@@ -37,7 +37,6 @@ export default function DAppPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [decryptedAmount, setDecryptedAmount] = useState<number | null>(null);
-  const [countdown, setCountdown] = useState<number>(0);
   const [canDecrypt, setCanDecrypt] = useState(false);
   
   const isInitializingRef = useRef(false);
@@ -122,18 +121,8 @@ export default function DAppPage() {
 
       console.log('✅ Transaction confirmed!');
 
-      // 4. 开始倒计时（10秒）
-      setCountdown(10);
-      const timer = setInterval(() => {
-        setCountdown(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            setCanDecrypt(true);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+      // 4. 允许解密
+      setCanDecrypt(true);
 
     } catch (e: any) {
       console.error('❌ Submit failed:', e);
@@ -151,6 +140,10 @@ export default function DAppPage() {
     setError(null);
 
     try {
+      // 等待权限同步（3秒）
+      console.log('⏳ Waiting for permission sync...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
       console.log('🔓 Decrypting amount...');
 
       // 1. 创建合约实例
@@ -283,7 +276,7 @@ export default function DAppPage() {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter amount, e.g. 5000"
-              disabled={isSubmitting || countdown > 0}
+              disabled={isSubmitting}
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-blue-500 focus:outline-none text-lg disabled:opacity-50"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -295,7 +288,7 @@ export default function DAppPage() {
           {!canDecrypt && decryptedAmount === null && (
             <button
               onClick={handleSubmit}
-              disabled={isSubmitting || !amount || countdown > 0}
+              disabled={isSubmitting || !amount}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isSubmitting ? (
@@ -310,23 +303,6 @@ export default function DAppPage() {
                 '🔐 Submit Commitment'
               )}
             </button>
-          )}
-
-          {/* Countdown */}
-          {countdown > 0 && (
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mt-4">
-              <div className="flex items-center gap-3">
-                <div className="text-2xl">⏳</div>
-                <div className="flex-1">
-                  <p className="font-semibold text-amber-900 dark:text-amber-300 mb-1">
-                    Syncing permissions... {countdown}s
-                  </p>
-                  <p className="text-xs text-amber-800 dark:text-amber-400">
-                    Waiting for blockchain to sync permission data
-                  </p>
-                </div>
-              </div>
-            </div>
           )}
 
           {/* Decrypt Button */}
