@@ -6,7 +6,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ethers, BrowserProvider } from 'ethers';
 
 // 合约配置（已部署到 Sepolia）
-const CONTRACT_ADDRESS = '0xE2dBd48f9FcFbF30bfF433F5E30258ab7040E94B';
+const CONTRACT_ADDRESS = '0xe2dbd48f9fcfbf30bff433f5e30258ab7040e94b';
 const CONTRACT_ABI = [
   "function submitCommitment(bytes32, bytes) external",
   "function getMyCommitment() external view returns (bytes32)",
